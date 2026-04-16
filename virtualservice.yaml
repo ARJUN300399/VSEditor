@@ -1,0 +1,52 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: >
+      {"apiVersion":"networking.istio.io/v1alpha3","kind":"VirtualService","metadata":{"annotations":{},"labels":{"app.kubernetes.io/instance":"cards-dm-card-authentication-infra"},"name":"cards-dm-apigw-card-authentication-vs","namespace":"cards-dm-apigw-iut-ns"},"spec":{"gateways":["cards-dm-apigw-istio-gw"],"hosts":["*"],"http":[{"match":[{"uri":{"exact":"/dummyentry"}}],"rewrite":{"uri":"/api-gateway/cards-dm-card-authentication-cmc-obrh-services/route/dispatch"},"route":[{"destination":{"host":"cards-dm-apigw-svc","port":{"number":8081}},"headers":{"request":{"add":{"REQUEST-URL":"/dummyentry","SERVICE-CONSUMER":"DUMMY-SERVICE-CONSUMER","SERVICE-CONSUMER-SERVICE":"DUMMY-SERVICE-CONSUMER-SERVICE"}}}}]}]}}
+  creationTimestamp: '2025-09-09T20:01:28Z'
+  generation: 7
+  labels:
+    app.kubernetes.io/instance: cards-dm-card-authentication-infra
+  name: cards-dm-apigw-card-authentication-vs
+  namespace: cards-dm-apigw-iut-ns
+  resourceVersion: '207675866'
+  uid: 072e25f5-a878-4b39-bcf3-8a7b1c06bd9c
+spec:
+  gateways:
+    - cards-dm-apigw-istio-gw
+  hosts:
+    - "*"
+  http:
+    - match:
+        - uri:
+            exact: /dummyentry
+      rewrite:
+        uri: /api-gateway/cards-dm-card-authentication-cmc-obrh-services/route/dispatch
+      route:
+        - destination:
+            host: cards-dm-apigw-svc
+            port:
+              number: 8081
+          headers:
+            request:
+              add:
+                REQUEST-URL: /dummyentry
+                SERVICE-CONSUMER: DUMMY-SERVICE-CONSUMER
+                SERVICE-CONSUMER-SERVICE: DUMMY-SERVICE-CONSUMER-SERVICE
+    - match:
+        - uri:
+            exact: /cards/card-authentication/v1/atmPinGeneration
+      rewrite:
+        uri: /api-gateway/cards-dm-card-authentication-cmc-obrh-services/route/dispatch
+      route:
+        - destination:
+            host: cards-dm-apigw-svc
+            port:
+              number: 8081
+          headers:
+            request:
+              set:
+                REQUEST-URL: /cards/card-authentication/v1/atmPinGeneration
+                SERVICE-CONSUMER: HDFC_OBP_SERVICE_CONSUMER
+                SERVICE-CONSUMER-SERVICE: cards-atmPinGeneration-v1
